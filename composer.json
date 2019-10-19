@@ -1,0 +1,27 @@
+{
+    "name": "uraankhayayaal/yii2-fileuploader",
+    "description": "Yii2 file uploader",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension"," file uploader"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ayaal Kaplin",
+            "email": "uraankhayayaal@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "~2.0.0",
+        "npm-asset/@uppy-core": "*",
+        "npm-asset/@uppy-dashboard": "*",
+        "npm-asset/@uppy-tus": "*"
+    },
+    "extra": {
+        "bootstrap": "uraankhayayaal\\fileuploader\\Bootstrap"
+    },
+    "autoload": {
+        "psr-4": {
+            "uraankhayayaal\\fileuploader\\": "src"
+        }
+    }
+}
