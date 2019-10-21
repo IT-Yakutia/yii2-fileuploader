@@ -28,4 +28,26 @@ Usage
 Once the extension is installed, simply use it in your code by  :
 
 ```php
-<?= \uraankhayayaal\fileuploader\AutoloadExample::widget(); ?>```
+<?= \uraankhayayaal\fileuploader\widgets\input\WFileinput::widget([
+    'model' => $model,
+    'attribute' => 'files',
+    'relationAttributeName' => 'directoryFiles',
+    'action' => Url::toRoute(['/directory/directory/upload']),
+    'model_attribute' => 'directory_id',
+    'model_id' => $model->id,
+]); ?>
+```
+
+On controller:
+```
+public function actions()
+{
+    return [
+        ...
+        'upload' => [
+            'class' => \uraankhayayaal\fileuploader\actions\FileUplaodAction::className(),
+            'fileModel' => \yourpath\to\Model::className(),
+        ]
+    ];
+}
+```
