@@ -12,9 +12,7 @@
     ],
     "require": {
         "yiisoft/yii2": "~2.0.0",
-        "npm-asset/@uppy-core": "*",
-        "npm-asset/@uppy-dashboard": "*",
-        "npm-asset/@uppy-tus": "*"
+        "npm-asset/filepond": "*"
     },
     "extra": {
         "bootstrap": "uraankhayayaal\\fileuploader\\Bootstrap"
