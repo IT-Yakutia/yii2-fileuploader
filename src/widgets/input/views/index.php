@@ -2,14 +2,60 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\grid\GridView;
 
 ?>
 
         <div>
-            <?php foreach ($model->{$relationAttributeName} as $file) { ?>
+            <?php /*foreach ($model->{$relationAttributeName} as $file) { ?>
                 <p><a download="<?= $file->name ?>" href="<?= Url::toRoute($file->path) ?>"><?= $file->filename ?></a></p>
-            <?php } ?>
-            </div>
+            <?php }*/ ?>
+            <br>
+            <?= GridView::widget([
+                'tableOptions' => [
+                    'class' => 'striped bordered my-responsive-table',
+                    'id' => 'sortable'
+                ],
+                'rowOptions' => function ($fileModel, $key, $index, $grid) {
+                    return ['data-sortable-id' => $fileModel->id];
+                },
+                'options' => [
+                    'data' => [
+                        'sortable-widget' => 1,
+                        'sortable-url' => \yii\helpers\Url::toRoute(['sorting']),
+                    ]
+                ],
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    ['class' => 'uraankhayayaal\materializecomponents\grid\MaterialActionColumn', 'template' => '{update}'],
+
+                    [
+                        'attribute' => 'path',
+                        'format' => 'raw',
+                        'value' => function($model){
+                            return Html::a($model->name, [$model->path], ['download' => $model->name]);
+                        },
+                    ],
+                    'filename',
+                    'ext',
+                    'size',
+
+                    ['class' => 'uraankhayayaal\materializecomponents\grid\MaterialActionColumn', 'template' => '{delete}'],
+                    ['class' => \uraankhayayaal\sortable\grid\Column::className()],
+                ],
+                'pager' => [
+                    'class' => 'yii\widgets\LinkPager',
+                    'options' => ['class' => 'pagination center'],
+                    'prevPageCssClass' => '',
+                    'nextPageCssClass' => '',
+                    'pageCssClass' => 'waves-effect',
+                    'nextPageLabel' => '<i class="material-icons">chevron_right</i>',
+                    'prevPageLabel' => '<i class="material-icons">chevron_left</i>',
+                ],
+            ]); ?>
+        </div>
 		<p>
 		    <!-- <label> -->
 		    <input type="file" id="<?= Html::getInputId($model, $attribute); ?>" name="<?= $model->formName() ?>[<?= $attribute ?>]" <?= ($model->$attribute) ? 'checked' : ''; ?>  class="filepond" multiple>
