@@ -16,33 +16,32 @@ use yii\grid\GridView;
                     'class' => 'striped bordered my-responsive-table',
                     'id' => 'sortable'
                 ],
-                'rowOptions' => function ($fileModel, $key, $index, $grid) {
-                    return ['data-sortable-id' => $fileModel->id];
+                'rowOptions' => function ($model, $key, $index, $grid) {
+                    return ['data-sortable-id' => $model->id];
                 },
                 'options' => [
                     'data' => [
                         'sortable-widget' => 1,
-                        'sortable-url' => \yii\helpers\Url::toRoute(['sorting']),
+                        'sortable-url' => \yii\helpers\Url::toRoute(['/directory/directory-file/sorting']),
                     ]
                 ],
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-                    ['class' => 'uraankhayayaal\materializecomponents\grid\MaterialActionColumn', 'template' => '{update}'],
 
                     [
                         'attribute' => 'path',
                         'format' => 'raw',
                         'value' => function($model){
-                            return Html::a($model->name, [$model->path], ['download' => $model->name]);
+                            return Html::a($model->filename, [$model->path], ['download' => $model->filename]);
                         },
                     ],
-                    'filename',
                     'ext',
                     'size',
+                    'created_at:datetime',
 
-                    ['class' => 'uraankhayayaal\materializecomponents\grid\MaterialActionColumn', 'template' => '{delete}'],
+                    ['class' => 'uraankhayayaal\materializecomponents\grid\MaterialActionColumn', 'template' => '{update} {delete}'],
                     ['class' => \uraankhayayaal\sortable\grid\Column::className()],
                 ],
                 'pager' => [
@@ -62,7 +61,12 @@ use yii\grid\GridView;
 		    <!-- <span for="<?= Html::getInputId($model, $attribute); ?>"><?= $model->getAttributeLabel($attribute); ?></span> -->
 		    <!-- </label> -->
         </p>
-        
+<?php
+    $extraJsonData = '';
+    if(!empty($extraFields)){
+        $extraJsonData = \yii\helpers\Json::encode($extraFields);
+    }
+?>
 <?php $this->registerJs("
     FilePond.parse(document.body);
 
@@ -82,6 +86,7 @@ use yii\grid\GridView;
                     formData.append('".Yii::$app->request->csrfParam."', '".Yii::$app->request->getCsrfToken()."');
                     formData.append('parent_id', '".$model_id."');
                     formData.append('parent_attribute', '".$model_attribute."');
+                    formData.append('extraData', '".$extraJsonData."');
                     return formData;
                 }
             },
@@ -111,5 +116,13 @@ use yii\grid\GridView;
                 }
             }
         ]
+    });
+
+    FilePond.on('addfile', (error, file) => {
+        if(error){
+            console.log(error);
+            return;
+        }
+        console.log(file);
     });
 ", $this::POS_READY);?>

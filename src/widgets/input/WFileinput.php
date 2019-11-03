@@ -14,6 +14,7 @@ class WFileinput extends \yii\base\Widget
     public $model_attribute;
     public $model_id;
     public $fileSearchModel;
+    public $extraFields = [];
 
     public function init() {
         FilepondAsset::register( $this->getView() );
@@ -24,7 +25,7 @@ class WFileinput extends \yii\base\Widget
     {
         $className = $this->fileSearchModel;
         $searchModel = new $className();
-        $searchModel->directory_id = $this->model_id;
+        $searchModel->{$this->model_attribute} = $this->model_id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         if($this->model_id == null){
@@ -39,6 +40,7 @@ class WFileinput extends \yii\base\Widget
                 'relationAttributeName' => $this->relationAttributeName,
                 'dataProvider' => $dataProvider,
                 'searchModel' => $searchModel,
+                'extraFields' => $this->extraFields,
             ]);
         }
     }

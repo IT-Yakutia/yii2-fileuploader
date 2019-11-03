@@ -41,12 +41,23 @@ class File extends Model
 
             if($this->file->saveAs($path . $filename)){
                 $fileModel  = new $className();
-                $fileModel->name = $this->file->baseName . '.' . $this->file->extension;
                 $fileModel->path = $this->url_path . $filename;
                 $fileModel->ext = $this->file->extension;
                 $fileModel->size = Yii::$app->formatter->asShortSize($this->file->size, 2);
-                $fileModel->filename = $this->file->baseName;
+                $fileModel->filename = $this->file->baseName . '.' . $this->file->extension;
                 $fileModel->{$this->parent_attribute} = $this->parent_id;
+
+                /*
+                 * Extra data here
+                 */
+                $extraJsonData = Yii::$app->request->post('extraData');
+                if(!empty($extraJsonData)){
+                    $extraData = \yii\helpers\Json::decode($extraJsonData);
+                    foreach ($extraData as $key => $value) {
+                        $fileModel->$key = $value;
+                    }
+                }
+
                 if($fileModel->save())
                     return $fileModel->id;
                 else
