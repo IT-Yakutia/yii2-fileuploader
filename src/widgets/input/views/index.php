@@ -41,7 +41,12 @@ use yii\grid\GridView;
                     'size',
                     'created_at:datetime',
 
-                    ['class' => 'uraankhayayaal\materializecomponents\grid\MaterialActionColumn', 'template' => '{update} {delete}'],
+                    $controller ? ['class' => 'uraankhayayaal\materializecomponents\grid\MaterialActionColumn',
+                        'template' => '{update} {delete}',
+                        'controller' => $controller,
+                    ] : ['class' => 'uraankhayayaal\materializecomponents\grid\MaterialActionColumn',
+                        'template' => '{update} {delete}',
+                    ],
                     ['class' => \uraankhayayaal\sortable\grid\Column::className()],
                 ],
                 'pager' => [
