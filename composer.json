@@ -12,7 +12,7 @@
     ],
     "require": {
         "yiisoft/yii2": "~2.0.0",
-        "npm-asset/filepond": "*"
+        "npm-asset/filepond": "8.30.4"
     },
     "extra": {
         "bootstrap": "uraankhayayaal\\fileuploader\\Bootstrap"
